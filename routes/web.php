@@ -31,13 +31,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::resource('/profil', App\Http\Controllers\ProfilController::class);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 // Route::get('/user', [UserController::class, 'index'])->name('user.index');
@@ -51,6 +46,3 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Route::post('/produk/simpan_produk', [ProdukController::class, 'simpan'])->name('produk.simpan');
 // Route::get('/produk/ubah_produk/{id}', [ProdukController::class, 'ubah'])->name('produk.ubah');
 // Route::post('/produk/update_produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
-
-Route::resource('user', UserController::class);
-Route::resource('produk', ProdukController::class);
