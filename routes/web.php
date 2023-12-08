@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\profileController;
+use App\Http\Controllers\ProdukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,16 @@ use App\Http\Controllers\UserController;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
 Route::get('/about', function () {
     return 'Halaman About';
 });
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/about/{search}', function () {
     $data = [
@@ -26,14 +34,6 @@ Route::get('/about/{search}', function () {
     ];
     return view('about', $data);
 });
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::resource('/profil', App\Http\Controllers\ProfilController::class);
-
-
 
 // Route::get('/user', [UserController::class, 'index'])->name('user.index');
 // Route::get('/user/tambah_user', [UserController::class, 'tambah'])->name('user.tambah');
@@ -46,3 +46,11 @@ Route::resource('/profil', App\Http\Controllers\ProfilController::class);
 // Route::post('/produk/simpan_produk', [ProdukController::class, 'simpan'])->name('produk.simpan');
 // Route::get('/produk/ubah_produk/{id}', [ProdukController::class, 'ubah'])->name('produk.ubah');
 // Route::post('/produk/update_produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+
+// Route:: get('/profile', function() {
+//     $nama ="Resa Meylani";
+//     return view ('profile', compact('nama'));
+// });
+Route::resource('user', UserController::class);
+Route::resource('profile', ProfileController::class);
+Route::resource('produk', ProdukController::class);
