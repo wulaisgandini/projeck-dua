@@ -13,6 +13,9 @@
     <div class="container mt-5">
         <h2>List Produk</h2>
         <hr>
+        @if(session()->has('success'))
+        <h3>{{ session('success')}}</h3>
+        @endif
         <a href="{{ URL('produk/create') }}" class="btn btn-primary mb-3">Create Produk</a>
         <table class="table">
             <thead>

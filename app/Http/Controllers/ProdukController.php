@@ -2,66 +2,74 @@
 
 namespace App\Http\Controllers;
 
-//import Model "Post
-use App\Models\product;
-
-//return type View
-use Illuminate\View\View;
-
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
-class produkController extends Controller
-
+class ProdukController extends Controller
 {
+
     public function index()
     {
-
-        //get posts
-        $produk = product::get();
-
-        //render view with posts
-        return view('product.index', compact('produk'));
+        $produk = Produk::all();
+        return view('produk.index', compact('produk'));
     }
+
     public function create()
     {
-        return view('product.create');
+        return view('produk.create');
     }
+
     public function store(Request $request)
     {
-        product::create([
-            'product' => $request->product,
-            'price' => $request->price,
-            'stock' => $request->stock,
+        //validasi
+        $validated = $request->validate([
+            'produk' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
         ]);
 
-        return redirect('/produk');
+        $produk = new Produk();
+        $produk->produk = $request->produk;
+        $produk->price = $request->price;
+        $produk->stock = $request->stock;
+        $produk->save();
+        return redirect('/produk')->with('success', 'Data berhasil dibuat!');
     }
+
+    public function show($id)
+    {
+        $produk = Produk::findOrFail($id);
+        return view('produk.show', compact('produk'));
+    }
+
     public function edit($id)
     {
-        $produk = product::find($id);
+        $produk = Produk::findOrFail($id);
         return view('produk.edit', compact('produk'));
     }
-    public function destroy($id)
-    {
-        $product = product::find($id);
 
-        if (!$product) {
-            return redirect('/produk')->with('error', 'Produk tidak ditemukan');
-        }
-
-        $product->delete();
-
-        return redirect('/produk')->with('success', 'Produk berhasil dihapus');
-    }
     public function update(Request $request, $id)
     {
-        $produk = product::find($id);
-        $produk->update([
-            'product' => $request->product,
-            'price'   => $request->price,
-            'stock'   => $request->stock,
+        $validated = $request->validate([
+            'produk' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
         ]);
 
-        return redirect('/produk');
+        $produk = Produk::findOrFail($id);
+        $produk->produk = $request->produk;
+        $produk->price = $request->price;
+        $produk->stock = $request->stock;
+        $produk->save();
+        return redirect()->route('produk.index')
+            ->with('success', 'Data berhasil dibuat!');
+    }
+
+    public function destroy($id)
+    {
+        $produk = Produk::findOrFail($id);
+        $produk->delete();
+        return redirect()->route('produk.index')
+            ->with('success', 'Data berhasil dihapus!');
     }
 }
