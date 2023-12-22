@@ -20,6 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+
 Route::get('/about', function () {
     return 'Halaman About';
 });
@@ -53,4 +55,11 @@ Route::get('/about/{search}', function () {
 // });
 Route::resource('user', UserController::class);
 Route::resource('profile', ProfileController::class);
-Route::resource('produk', ProdukController::class);
+
+
+Route::middleware(['auth', 'user'])->group(function() {
+    Route::resource('produk', ProdukController::class);
+
+});
+ 
+
